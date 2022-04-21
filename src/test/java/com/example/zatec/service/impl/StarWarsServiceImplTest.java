@@ -43,7 +43,7 @@ class StarWarsServiceImplTest {
     @InjectMocks
     StarWarsServiceImpl starWarsService;
 
-    String baseUrl = "https://swapi.dev";
+    final String baseUrl = "https://swapi.dev";
 
     @BeforeEach
     void setUp() {
