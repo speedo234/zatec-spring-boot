@@ -32,17 +32,11 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     ChuckNorrisService chuckNorrisService;
 
-//    @Value("${star.wars.base.url}")
-//    private String starWarsBaseUrl;
-
-    @Value("${chucknorris.base.url}")
-    private String chuckNorrisBaseUrl;
-
 
     @Override
-    public List<List<JsonNode>> search(String name) {
-        List<JsonNode> starWarsList = starWarsService.searchStarWars(name);
-        List<JsonNode> chuckNorrisList = chuckNorrisService.searchChuckNorris(name);
+    public List<List<JsonNode>> search(String queryString) {
+        List<JsonNode> starWarsList = starWarsService.searchStarWars(queryString);
+        List<JsonNode> chuckNorrisList = chuckNorrisService.searchChuckNorris(queryString);
         //
         List<List<JsonNode>> combinedResponseList = new ArrayList<>();
         combinedResponseList.add( starWarsList );

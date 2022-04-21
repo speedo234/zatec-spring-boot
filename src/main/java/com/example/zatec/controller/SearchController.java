@@ -21,10 +21,10 @@ public class SearchController {
     SearchService searchService;
 
 
-    @GetMapping("/{name}")
-    public ResponseEntity<?> search(@PathVariable String name){
+    @GetMapping("/{queryString}")
+    public ResponseEntity<?> search(@PathVariable String queryString){
 
-        return ResponseEntity.status(HttpStatus.OK).body(searchService.search(name));
+        return ResponseEntity.status(HttpStatus.OK).body(searchService.search(queryString));
     }
 
 

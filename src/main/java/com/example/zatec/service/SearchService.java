@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SearchService {
 
-    List<List<JsonNode>> search(String name);
+    List<List<JsonNode>> search(String queryString);
 
 }

@@ -3,6 +3,7 @@ package com.example.zatec.service.impl;
 
 import com.example.zatec.exception.NotFoundException;
 import com.example.zatec.service.StarWarsService;
+import com.example.zatec.util.Util;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,24 +22,41 @@ public class StarWarsServiceImpl implements StarWarsService {
     static final Logger logger = LoggerFactory.getLogger(StarWarsServiceImpl.class);
 
     @Autowired
-    private RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate;
 
-    @Value("${star.wars.base.url}")
+    @Autowired
+    private Util util;
+
     private String baseUrl;
+
+
+    public StarWarsServiceImpl() {
+    }
+
+    @Autowired
+    public StarWarsServiceImpl(RestTemplate restTemplate, Util util, @Value("${star.wars.base.url}") String baseUrl) {
+        this.restTemplate = restTemplate;
+        this.baseUrl = baseUrl;
+        this.util = util;
+    }
 
     @Override
     public List<JsonNode> getStarWarsPeople() {
         JsonNode starWarsPeopleJsonNodeBody = null;
         List<JsonNode> jsonNodeList =  new ArrayList<>();
-        starWarsPeopleJsonNodeBody = doApiCall(baseUrl+"/api/people");
-        String nextUrl = getNextUrl(starWarsPeopleJsonNodeBody);
+        starWarsPeopleJsonNodeBody = util.doApiCall(baseUrl+"/api/people");
+        String nextUrl = util.getNextUrl(starWarsPeopleJsonNodeBody);
         logger.info("nextUrl=-> "+nextUrl);
         for( JsonNode jsonNode: starWarsPeopleJsonNodeBody.get("results") ){
             jsonNodeList.add( jsonNode );
         }
-        while(nextUrl != null && !nextUrl.equalsIgnoreCase("null")){
-            starWarsPeopleJsonNodeBody = doApiCall( nextUrl.replaceAll("\"", "") );
-            nextUrl = getNextUrl( starWarsPeopleJsonNodeBody );
+//        String previousUrl = nextUrl;
+        while(nextUrl != null && !nextUrl.equalsIgnoreCase("null") /*&& previousUrl.equalsIgnoreCase(nextUrl)*/ ){
+            starWarsPeopleJsonNodeBody = util.doApiCall( nextUrl.replaceAll("\"", "") );
+            nextUrl = util.getNextUrl( starWarsPeopleJsonNodeBody );
+
+
+
             logger.info("nextUrl=-> "+nextUrl);
             for( JsonNode jsonNode: starWarsPeopleJsonNodeBody.get("results") ){
                 jsonNodeList.add( jsonNode );
@@ -51,26 +69,8 @@ public class StarWarsServiceImpl implements StarWarsService {
     }
 
 
-    public JsonNode doApiCall(String url){
-        JsonNode starWarsPeopleJsonNodeBody = null;
-        ResponseEntity<JsonNode> response = restTemplate.getForEntity(
-                url, JsonNode.class);
-        starWarsPeopleJsonNodeBody = response.getBody();
-        logger.info("=========="+starWarsPeopleJsonNodeBody);
-        logger.info("=====count====="+starWarsPeopleJsonNodeBody.get("count"));
-        logger.info("=====next====="+starWarsPeopleJsonNodeBody.get("next"));
-        logger.info("=====results====="+starWarsPeopleJsonNodeBody.get("results"));
-        return starWarsPeopleJsonNodeBody;
-    }
-
-
-    public String getNextUrl( JsonNode starWarsPeopleJsonNodeBody){
-        return starWarsPeopleJsonNodeBody.get("next").toString().replaceAll("\"", "");
-    }
-
-
-    public List<JsonNode> searchStarWars(String name) {
-        final String starWarsSearchUrl = baseUrl+"/api/people/?search="+name.trim();
+    public List<JsonNode> searchStarWars(String queryString) {
+        final String starWarsSearchUrl = baseUrl+"/api/people/?search="+queryString.trim();
         logger.info("starWarsSearchUrl==--> {} "+starWarsSearchUrl);
         ResponseEntity<JsonNode> response = restTemplate.getForEntity(
                 starWarsSearchUrl,

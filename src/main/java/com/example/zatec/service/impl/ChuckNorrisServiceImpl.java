@@ -23,12 +23,12 @@ public class ChuckNorrisServiceImpl implements ChuckNorrisService {
     @Autowired
     private RestTemplate restTemplate;
 
-//    @Value("${chucknorris.base.url}")
     private String baseUrl;
 
     public ChuckNorrisServiceImpl() {
     }
 
+    @Autowired
     public ChuckNorrisServiceImpl(RestTemplate restTemplate, @Value("${chucknorris.base.url}") String baseUrl) {
         this.restTemplate = restTemplate;
         this.baseUrl = baseUrl;
@@ -48,8 +48,8 @@ public class ChuckNorrisServiceImpl implements ChuckNorrisService {
     }
 
 
-    public List<JsonNode> searchChuckNorris(String name) {
-        final String chuckNorrisSearchUrl = baseUrl+"/jokes/search?query="+name.trim();
+    public List<JsonNode> searchChuckNorris(String queryString) {
+        final String chuckNorrisSearchUrl = baseUrl+"/jokes/search?query="+queryString.trim();
         logger.info("chuckNorrisSearchUrl==--> {} "+chuckNorrisSearchUrl);
         ResponseEntity<JsonNode> response = restTemplate.getForEntity(
                 chuckNorrisSearchUrl,
@@ -65,10 +65,6 @@ public class ChuckNorrisServiceImpl implements ChuckNorrisService {
         }
         return jsonNodeList;
     }
-
-
-
-
 
 
 }

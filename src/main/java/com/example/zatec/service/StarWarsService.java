@@ -9,7 +9,7 @@ public interface StarWarsService {
 
     List<JsonNode> getStarWarsPeople();
 
-    List<JsonNode> searchStarWars(String name);
+    List<JsonNode> searchStarWars(String queryString);
 
 
 }
