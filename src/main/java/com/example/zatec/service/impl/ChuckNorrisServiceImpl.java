@@ -3,6 +3,7 @@ package com.example.zatec.service.impl;
 
 import com.example.zatec.exception.NotFoundException;
 import com.example.zatec.service.ChuckNorrisService;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,10 +21,18 @@ public class ChuckNorrisServiceImpl implements ChuckNorrisService {
     static final Logger logger = LoggerFactory.getLogger(ChuckNorrisServiceImpl.class);
 
     @Autowired
-    private RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate;
 
-    @Value("${chucknorris.base.url}")
+//    @Value("${chucknorris.base.url}")
     private String baseUrl;
+
+    public ChuckNorrisServiceImpl() {
+    }
+
+    public ChuckNorrisServiceImpl(RestTemplate restTemplate, @Value("${chucknorris.base.url}") String baseUrl) {
+        this.restTemplate = restTemplate;
+        this.baseUrl = baseUrl;
+    }
 
     @Override
     public List<String> getJokesCategories() {
@@ -36,4 +46,35 @@ public class ChuckNorrisServiceImpl implements ChuckNorrisService {
         }
         return jokesCategoriesList;
     }
+
+
+    public List<JsonNode> searchChuckNorris(String name) {
+        final String chuckNorrisSearchUrl = baseUrl+"/jokes/search?query="+name.trim();
+        logger.info("chuckNorrisSearchUrl==--> {} "+chuckNorrisSearchUrl);
+        ResponseEntity<JsonNode> response = restTemplate.getForEntity(
+                chuckNorrisSearchUrl,
+                JsonNode.class);
+        JsonNode chuckNorrisSearchJsonNodeBody = response.getBody();
+        logger.info(":::chuckNorrisSearchJsonNodeBody=-> {} ",chuckNorrisSearchJsonNodeBody);
+        if(chuckNorrisSearchJsonNodeBody == null || chuckNorrisSearchJsonNodeBody.isEmpty()){
+            throw new NotFoundException("Could not find any jokes from "+chuckNorrisSearchUrl);
+        }
+        List<JsonNode> jsonNodeList =  new ArrayList<>();
+        for( JsonNode jsonNode: chuckNorrisSearchJsonNodeBody.get("result")){
+            jsonNodeList.add( jsonNode );
+        }
+        return jsonNodeList;
+    }
+
+
+
+
+
+
 }
+
+
+
+
+
+

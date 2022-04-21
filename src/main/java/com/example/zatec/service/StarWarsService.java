@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface StarWarsService {
 
-List<JsonNode> getStarWarsPeople();
+    List<JsonNode> getStarWarsPeople();
+
+    List<JsonNode> searchStarWars(String name);
 
 
 }

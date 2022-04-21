@@ -44,11 +44,9 @@ public class StarWarsServiceImpl implements StarWarsService {
                 jsonNodeList.add( jsonNode );
             }
         }
-
         if( jsonNodeList == null || jsonNodeList.isEmpty()){
             throw new NotFoundException("No Star Wars People Found...");
         }
-
         return jsonNodeList;
     }
 
@@ -68,6 +66,25 @@ public class StarWarsServiceImpl implements StarWarsService {
 
     public String getNextUrl( JsonNode starWarsPeopleJsonNodeBody){
         return starWarsPeopleJsonNodeBody.get("next").toString().replaceAll("\"", "");
+    }
+
+
+    public List<JsonNode> searchStarWars(String name) {
+        final String starWarsSearchUrl = baseUrl+"/api/people/?search="+name.trim();
+        logger.info("starWarsSearchUrl==--> {} "+starWarsSearchUrl);
+        ResponseEntity<JsonNode> response = restTemplate.getForEntity(
+                starWarsSearchUrl,
+                JsonNode.class);
+        JsonNode starWarsSearchJsonNodeBody = response.getBody();
+        logger.info(":::starWarsSearchJsonNodeBody=-> {} ",starWarsSearchJsonNodeBody);
+        if(starWarsSearchJsonNodeBody == null || starWarsSearchJsonNodeBody.isEmpty()){
+            throw new NotFoundException("Could not find any people from "+starWarsSearchUrl);
+        }
+        List<JsonNode> jsonNodeList =  new ArrayList<>();
+        for( JsonNode jsonNode: starWarsSearchJsonNodeBody.get("results")){
+            jsonNodeList.add( jsonNode );
+        }
+        return jsonNodeList;
     }
 
 
