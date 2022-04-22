@@ -1,0 +1,22 @@
+version: "3"
+services:
+#          angular:
+#                  container_name: zatec_app_container_angular
+##                  build: .
+#                  image: speedy101/zatec_image_angular:v1
+#                  environment:
+#                    - TECHHIRE_URI=springboot
+#                  ports:
+#                    - "8081:80"
+#                  depends_on:
+#                    - springboot
+          springboot:
+                  container_name: zatec_app_container_spring_boot_war
+                  build: .
+#                  image: speedy101/zatec_image_spring_boot_war:v1
+                  image: zatec_image_spring_boot_war:v1
+                  ports:
+                    - "8093:8094"
+
+
+
