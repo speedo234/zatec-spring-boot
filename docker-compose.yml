@@ -16,7 +16,7 @@ services:
 #                  image: speedy101/zatec_image_spring_boot_war:v1
                   image: zatec_image_spring_boot_war:v1
                   ports:
-                    - "8093:8094"
+                    - "8093:8080"
 
 
 

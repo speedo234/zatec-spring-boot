@@ -1,4 +1,4 @@
-package com.techhireng.github;
+package com.example.zatec;
 
 import com.example.zatec.ZatecApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
