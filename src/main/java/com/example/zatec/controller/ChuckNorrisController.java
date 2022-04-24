@@ -13,9 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/chuck")
 public class ChuckNorrisController {
 
-    @Autowired
+//    @Autowired
     ChuckNorrisService chuckService;
 
+
+    @Autowired
+    public ChuckNorrisController(ChuckNorrisService chuckService) {
+        this.chuckService = chuckService;
+    }
 
     @GetMapping("/categories")
     public ResponseEntity<?> chuckNorrisCategories(){

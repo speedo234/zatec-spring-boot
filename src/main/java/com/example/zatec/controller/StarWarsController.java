@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/swapi")
 public class StarWarsController {
 
-    @Autowired
-    StarWarsService swapiService;
+//    @Autowired
+    StarWarsService starWarsService;
 
+    @Autowired
+    public StarWarsController(StarWarsService starWarsService) {
+        this.starWarsService = starWarsService;
+    }
 
     @GetMapping("/people")
     public ResponseEntity<?> starWarsPeople(){
-        return ResponseEntity.status(HttpStatus.OK).body(swapiService.getStarWarsPeople());
+        return ResponseEntity.status(HttpStatus.OK).body(starWarsService.getStarWarsPeople());
     }
 
 }
