@@ -23,13 +23,10 @@ public class SearchServiceImpl implements SearchService {
 
     static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
 
-//    @Autowired
     private RestTemplate restTemplate = new RestTemplate();
 
-//    @Autowired
     private StarWarsService starWarsService;
 
-//    @Autowired
     private ChuckNorrisService chuckNorrisService;
 
     @Autowired

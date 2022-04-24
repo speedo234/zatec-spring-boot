@@ -50,8 +50,7 @@ public class StarWarsServiceImpl implements StarWarsService {
         for( JsonNode jsonNode: starWarsPeopleJsonNodeBody.get("results") ){
             jsonNodeList.add( jsonNode );
         }
-//        String previousUrl = nextUrl;
-        while(nextUrl != null && !nextUrl.equalsIgnoreCase("null") /*&& previousUrl.equalsIgnoreCase(nextUrl)*/ ){
+        while(nextUrl != null && !nextUrl.equalsIgnoreCase("null") ){
             starWarsPeopleJsonNodeBody = util.doApiCall( nextUrl.replaceAll("\"", "") );
             nextUrl = util.getNextUrl( starWarsPeopleJsonNodeBody );
 
@@ -62,9 +61,9 @@ public class StarWarsServiceImpl implements StarWarsService {
                 jsonNodeList.add( jsonNode );
             }
         }
-        if( jsonNodeList == null || jsonNodeList.isEmpty()){
-            throw new NotFoundException("No Star Wars People Found...");
-        }
+//        if( jsonNodeList == null || jsonNodeList.isEmpty()){
+//            throw new NotFoundException("No Star Wars People Found...");
+//        }
         return jsonNodeList;
     }
 

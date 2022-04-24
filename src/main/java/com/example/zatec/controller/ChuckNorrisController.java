@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/chuck")
 public class ChuckNorrisController {
 
-//    @Autowired
-    ChuckNorrisService chuckService;
+
+    private ChuckNorrisService chuckService;
 
 
     @Autowired

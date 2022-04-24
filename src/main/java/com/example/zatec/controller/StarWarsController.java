@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/swapi")
 public class StarWarsController {
 
-//    @Autowired
-    StarWarsService starWarsService;
+    private StarWarsService starWarsService;
 
     @Autowired
     public StarWarsController(StarWarsService starWarsService) {

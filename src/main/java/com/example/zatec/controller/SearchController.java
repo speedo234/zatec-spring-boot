@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchController {
 
 
-//    @Autowired
-    SearchService searchService;
+    private SearchService searchService;
 
 
     @Autowired

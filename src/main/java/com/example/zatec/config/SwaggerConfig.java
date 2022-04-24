@@ -11,10 +11,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    /*swagger url*/
     //http://localhost:8093/swagger-ui/index.html
 
     @Bean
-    public Docket DroneApi() {
+    public Docket SwaggerApi() {
         return new Docket(DocumentationType.SWAGGER_2).select()
                 .apis(RequestHandlerSelectors.basePackage("com.example.zatec")).build();
     }
