@@ -9,26 +9,28 @@ Swagger 3.0.0 ( http://localhost:8093/swagger-ui/index.html )
 
 JAR FILE DEPLOYMENT
 
-1. Open up a terminal.
+1. Change the packaging in the pom.xml file to jar
 
-2. CD to the project root directory where the pom.xml file is located and run the below command
+2. Open up a terminal.
+
+3. CD to the project root directory where the pom.xml file is located and run the below command
    mvn clean install
    This would build a jar file and place it inside the target foler
 
-3. CD to the project's target directory and there will be a jar file there.
+4. CD to the project's target directory and there will be a jar file there.
 
-3. CD to the same location where the jar file is and run the below command to start up the application packaged in the jar file.
+5. CD to the same location where the jar file is and run the below command to start up the application packaged in the jar file.
    java -jar zatec-0.0.1-SNAPSHOT.jar
 
-4. Application should be up and running on port 8093
+6. Application should be up and running on port 8093
 
-5. Swagger will now be available on this url http://localhost:8093/swagger-ui/index.html to explore and test the end points.
+7. Swagger will now be available on this url http://localhost:8093/swagger-ui/index.html to explore and test the end points.
 
 =======================
 
 TOMCAT DEPLOYMENT
 
-If you would prefer to deploy on Tomcat then you have to change the packaging in the pom.xml file from jar to war
+If you would prefer to deploy on Tomcat then you have to change the packaging in the pom.xml file from jar to war. THIS IS VERY IMPORTANT.
 
 2. Open up a terminal.
 
