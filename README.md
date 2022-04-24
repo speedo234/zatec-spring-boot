@@ -45,6 +45,8 @@ If you would prefer to deploy on Tomcat then you have to change the packaging in
 
 7. Remember to add the context path to the application url while testing or simply rename the war file to ROOT so that you do not need to add a context path to the application url while accessing the end points.
 
+8. Finally, remember to access the application using the Tomcat port and no longer the port in the application.properties file. The Tomcat port can be configured in the server.xml file.
+
 
 
 
