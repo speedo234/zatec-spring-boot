@@ -23,15 +23,21 @@ public class SearchServiceImpl implements SearchService {
 
     static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
 
-    @Autowired
+//    @Autowired
     private RestTemplate restTemplate = new RestTemplate();
 
-    @Autowired
-    StarWarsService starWarsService;
+//    @Autowired
+    private StarWarsService starWarsService;
+
+//    @Autowired
+    private ChuckNorrisService chuckNorrisService;
 
     @Autowired
-    ChuckNorrisService chuckNorrisService;
-
+    public SearchServiceImpl(RestTemplate restTemplate, StarWarsService starWarsService, ChuckNorrisService chuckNorrisService) {
+        this.restTemplate = restTemplate;
+        this.starWarsService = starWarsService;
+        this.chuckNorrisService = chuckNorrisService;
+    }
 
     @Override
     public List<List<JsonNode>> search(String queryString) {

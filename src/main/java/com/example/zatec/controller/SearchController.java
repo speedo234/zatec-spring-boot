@@ -17,13 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchController {
 
 
-    @Autowired
+//    @Autowired
     SearchService searchService;
 
 
+    @Autowired
+    public SearchController(SearchService searchService) {
+        this.searchService = searchService;
+    }
+
     @GetMapping("/{queryString}")
     public ResponseEntity<?> search(@PathVariable String queryString){
-
         return ResponseEntity.status(HttpStatus.OK).body(searchService.search(queryString));
     }
 

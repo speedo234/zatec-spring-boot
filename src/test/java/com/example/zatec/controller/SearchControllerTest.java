@@ -1,12 +1,12 @@
 package com.example.zatec.controller;
 
-import com.example.zatec.service.ChuckNorrisService;
+import com.example.zatec.service.SearchService;
 import com.example.zatec.service.StarWarsService;
-import com.example.zatec.service.impl.ChuckNorrisServiceImpl;
+import com.example.zatec.service.impl.SearchServiceImpl;
 import com.example.zatec.service.impl.StarWarsServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,17 +28,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class StarWarsControllerTest {
+class SearchControllerTest {
 
 
     @Autowired
-    private MockMvc starwarsMockMvc;
+    private MockMvc searchMockMvc;
 
     @MockBean
-    StarWarsService starWarsService;
+    SearchServiceImpl searchService;
 
     @InjectMocks
-    StarWarsController starWarsController;
+    SearchController searchController;
+
 
     private static String baseEndpoint = "http://localhost:8093";
 
@@ -47,28 +47,31 @@ class StarWarsControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        starWarsService= mock(StarWarsServiceImpl.class);
-        starWarsController = new StarWarsController(starWarsService);
-        starwarsMockMvc = MockMvcBuilders.standaloneSetup(starWarsController).build();
+        searchService= mock(SearchServiceImpl.class);
+        searchController = new SearchController(searchService);
+        searchMockMvc = MockMvcBuilders.standaloneSetup(searchController).build();
     }
 
     @Test
-    void starWarsPeople() throws Exception {
+    void search() throws Exception {
+
+        final String queryString = "skype";
 
         ObjectMapper mapper = new ObjectMapper();
 //        mapper.registerModule(new JavaTimeModule());
 
         final String dummyJsonString = "{ \"next\": \"https://swapi.dev/api/people/?page=2\", \"results\": [ { \"dummyKey1\": \"dummyValue1\" }, { \"dummyKey2\": \"dummyValue2\" } ]  }";
         JsonNode expectedNode = mapper.readTree(dummyJsonString);
+        List<JsonNode> expectedList = new ArrayList<>();
+        expectedList.add(expectedNode);
+        List<List<JsonNode>> expected = new ArrayList<>();
+        expected.add(expectedList);
+        expected.add(expectedList);
 
-        List<JsonNode> expected = new ArrayList<>();
-        expected.add(expectedNode);
-        expected.add(expectedNode);
+        when(searchService.search(queryString)).thenReturn(expected);
 
-        when(starWarsService.getStarWarsPeople()).thenReturn(expected);
-
-        MvcResult mvcResult = starwarsMockMvc.perform(
-                        get(baseEndpoint+"/swapi/people") )
+        MvcResult mvcResult = searchMockMvc.perform(
+                        get(baseEndpoint+"/search/"+queryString) )
                 .andDo(print())
                 .andExpect(status().isOk()).andReturn();
 
@@ -77,5 +80,6 @@ class StarWarsControllerTest {
 
         assertThat(actual).isNotNull();
         assertThat(actual.size()).isGreaterThan(0);
+        assertThat(actual.size()).isEqualTo(expected.size());
     }
 }
