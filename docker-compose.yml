@@ -5,7 +5,7 @@ services:
 #                  build: .
                   image: speedy101/zatec_image_angular:v1
                   environment: 
-                    - TECHHIRE_URI=springboot
+                    - ZATEC_URI=springboot
                   ports: 
                     - "8081:80"
                   depends_on: 

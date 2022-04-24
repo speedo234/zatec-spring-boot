@@ -1,4 +1,4 @@
-Tech Spec
+TECH SPEC
 Java JDK 11
 Maven 3.6.3
 Spring Boot 2.5.3
@@ -51,7 +51,9 @@ If you would prefer to deploy on Tomcat then you have to change the packaging in
 
 
 
+CONTAINERIZATION
 
+There is a Dockerfile in the root directory and also a built image on docker hub speedy101/zatec_image_spring_boot_war:v1
 
 
 
